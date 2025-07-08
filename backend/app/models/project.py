@@ -12,3 +12,4 @@ class Project(Base):
 
     # Relación con páginas
     pages = relationship("Page", back_populates="project", cascade="all, delete-orphan")
+    sites = relationship("Site", back_populates="project")
