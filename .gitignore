@@ -1,0 +1,43 @@
+# Entorno virtual
+venv/
+ENV/
+env/
+.venv/
+
+# Archivos Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de configuración o variables sensibles
+.env
+*.env
+
+# Base de datos local (si usas SQLite)
+*.sqlite3
+*.db
+
+# Archivos de logs y dumps
+*.log
+*.sql
+*.sqlite
+
+# Configuración de IDEs/editors
+.vscode/
+.idea/
+*.swp
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Cache de tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Archivos generados por FastAPI docs (si exportas)
+openapi.json
+
+# __pydantic_cache__ para Pydantic v2
+__pydantic__/ 
