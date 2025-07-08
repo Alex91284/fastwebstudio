@@ -1,11 +1,12 @@
+import os
 import time
 from typing import Dict
 from jose import jwt
 from passlib.context import CryptContext
 
 # Clave secreta y algoritmo
-SECRET_KEY = "your_secret_key"
-ALGORITHM = "HS256"
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
