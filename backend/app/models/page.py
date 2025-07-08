@@ -12,3 +12,4 @@ class Page(Base):
 
     project_id = Column(Integer, ForeignKey("projects.id"))
     project = relationship("Project", back_populates="pages")
+    components = relationship("Component", back_populates="page", cascade="all, delete-orphan")
