@@ -14,5 +14,10 @@ class UserUpdate(BaseModel):
 class UserOut(UserBase):
     id: int
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+
     class Config:
         from_attributes = True
