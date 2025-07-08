@@ -16,7 +16,7 @@ __pycache__/
 # Base de datos local (si usas SQLite)
 *.sqlite3
 *.db
-
+fastwebstudio.db
 # Archivos de logs y dumps
 *.log
 *.sql
