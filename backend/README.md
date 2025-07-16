@@ -1,6 +1,8 @@
 # 🚀 FastWebStudio Backend
 
-FastWebStudio es una plataforma backend construida con **FastAPI**, pensada para permitir a los usuarios crear sitios web dinámicamente usando proyectos, páginas, plantillas, componentes y más.
+FastWebStudio es un generador de sitios web dinámicos, desarrollado con **FastAPI**. Este backend gestiona usuarios, proyectos, páginas, componentes, plantillas, autenticación y más, usando una arquitectura limpia y escalable.
+
+La plataforma backend construida con **FastAPI**, pensada para permitir a los usuarios crear sitios web dinámicamente usando proyectos, páginas, plantillas, componentes y más.
 
 ---
 
