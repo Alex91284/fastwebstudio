@@ -1,6 +1,8 @@
-# fastwebstudio
+# 🚀 FastWebStudio Backend
 
-FastWebStudio es una plataforma backend construida con **FastAPI**, pensada para permitir a los usuarios crear sitios web dinámicamente usando proyectos, páginas, plantillas, componentes y más.
+FastWebStudio es un generador de sitios web dinámicos, desarrollado con **FastAPI**. Este backend gestiona usuarios, proyectos, páginas, componentes, plantillas, autenticación y más, usando una arquitectura limpia y escalable.
+
+La plataforma backend construida con **FastAPI**, pensada para permitir a los usuarios crear sitios web dinámicamente usando proyectos, páginas, plantillas, componentes y más.
 
 ---
 
@@ -44,7 +46,20 @@ uvicorn app.main:app --reload
 Abre en navegador: http://localhost:8000/docs
 
 # 🔐 Autenticación
-El proyecto utiliza autenticación JWT (JSON Web Tokens). Usa el endpoint /auth/login para obtener un token que puedes usar en llamadas protegidas.
+Usamos JWT para proteger las rutas. Para probar:
+
+Crea un usuario vía POST /users/
+
+Inicia sesión vía POST /auth/login
+
+Copia el token y úsalo como Bearer Token para acceder a rutas protegidas (/users/me, etc.)
+
+🧪 Pruebas
+A través de Swagger UI:
+
+bash
+Copiar código
+http://localhost:8000/docs
 
 # 📘 Documentación API
 FastAPI genera documentación automáticamente en:
@@ -52,3 +67,9 @@ FastAPI genera documentación automáticamente en:
 Swagger UI: http://localhost:8000/docs
 
 Redoc: http://localhost:8000/redoc
+
+# 🧾Licencia
+Este proyecto está bajo la licencia MIT.
+
+# 🤝 Autor
+Desarrollado por Alex Bolaños Muñoz 
