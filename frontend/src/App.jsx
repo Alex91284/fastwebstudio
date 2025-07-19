@@ -11,7 +11,9 @@ function App() {
   }, [])
 
   return (
-    <div style={{ padding: 50 }}>
+    <div className="p-8">
+      <div className="text-red-500 text-4xl font-bold">Hola Tailwind!</div>
+
       <h1>FastWebStudio</h1>
       <p>{msg}</p>
     </div>
