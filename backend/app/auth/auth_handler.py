@@ -10,9 +10,12 @@ ALGORITHM = os.getenv("ALGORITHM")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def sign_jwt(user_id: int) -> Dict[str, str]:
+def sign_jwt(user: dict) -> Dict[str, str]:
     payload = {
-        "user_id": user_id,
+        "user_id": user["id"],
+        "name": user["name"],
+        "email": user["email"],
+        "role": user["role"],  
         "exp": time.time() + 3600  # Token válido por 1 hora
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)

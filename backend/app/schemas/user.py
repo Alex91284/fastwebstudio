@@ -5,7 +5,10 @@ class UserBase(BaseModel):
     email: EmailStr
 
 class UserCreate(UserBase):
-    pass
+    name: str
+    email: str
+    password: str
+    role: str
 
 class UserUpdate(BaseModel):
     nombre: str | None = None
