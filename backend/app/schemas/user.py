@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
 class UserBase(BaseModel):
-    nombre: str
+    name: str
     email: EmailStr
 
 class UserCreate(UserBase):
@@ -11,7 +11,7 @@ class UserCreate(UserBase):
     role: str
 
 class UserUpdate(BaseModel):
-    nombre: str | None = None
+    name: str | None = None
     email: EmailStr | None = None
 
 class UserOut(UserBase):

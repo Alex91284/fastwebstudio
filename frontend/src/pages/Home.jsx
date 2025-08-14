@@ -1,7 +1,7 @@
-import { useAuthContext } from "../auth/AuthProvider";
+import { useAuthContext } from "../auth/AuthContext"
 
 export default function Home() {
-  const { token, login, logout } = useAuthContext();
+  const { token, login, logout } = useAuthContext()
 
   return (
     <div className="p-6">
