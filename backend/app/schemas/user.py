@@ -5,8 +5,6 @@ class UserBase(BaseModel):
     email: EmailStr
 
 class UserCreate(UserBase):
-    name: str
-    email: str
     password: str
     role: str
 
@@ -16,6 +14,7 @@ class UserUpdate(BaseModel):
 
 class UserOut(UserBase):
     id: int
+    role: str
 
 class UserLogin(BaseModel):
     email: str

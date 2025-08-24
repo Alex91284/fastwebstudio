@@ -1,12 +1,15 @@
 from sqlalchemy.orm import Session
 from app import models, schemas
 
-def create_project(db: Session, project: schemas.project.ProjectCreate):
-    db_project = models.project.Project(**project.model_dump())
+def create_project(db: Session, project: schemas.ProjectCreate, user_id: int):
+    db_project = models.Project(**project.dict(), user_id=user_id)
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
     return db_project
+
+def get_projects_by_user(db: Session, user_id: int):
+    return db.query(models.Project).filter(models.Project.user_id == user_id).all()
 
 def get_projects(db: Session):
     return db.query(models.project.Project).all()

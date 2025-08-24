@@ -22,8 +22,11 @@ export default function Login() {
 
       if (!res.ok) throw new Error(data.detail || "Login failed")
 
-      login(data.token) // guarda el JWT
-      navigate("/dashboard") // redirige al dashboard
+      localStorage.setItem("token", data.access_token)
+
+      login(data.access_token)
+
+      navigate("/dashboard")
     } catch (err) {
       setError(err.message)
     }
@@ -41,7 +44,7 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 border rounded"
           required
-          autoComplete="email"
+          autoComplete="current-email"
         />
         <input
           type="password"
@@ -61,5 +64,5 @@ export default function Login() {
         <Link to="/register">Regístrate aquí</Link>
       </p>
     </div>
-  );
+  )
 }

@@ -7,7 +7,7 @@ from app.models.user import User
 from app.schemas import user as schemas
 from app.crud import user as crud_user
 
-router = APIRouter(prefix="/api/users", tags=["Users"])
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.post("/", response_model=schemas.UserOut)

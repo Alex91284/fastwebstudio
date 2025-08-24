@@ -10,6 +10,7 @@ class ProjectCreate(ProjectBase):
 
 class ProjectOut(ProjectBase):
     id: int
+    user_id: int
 
     class Config:
         from_attributes = True

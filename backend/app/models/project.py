@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
 
@@ -10,6 +10,12 @@ class Project(Base):
     description = Column(String, nullable=True)
     url = Column(String, nullable=True)
 
-    # Relación con páginas
+    # 🔑 Relación con usuario
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    # Relación con páginas y sitios
     pages = relationship("Page", back_populates="project", cascade="all, delete-orphan")
     sites = relationship("Site", back_populates="project")
+
+    # Relación inversa hacia User
+    user = relationship("User", back_populates="projects")

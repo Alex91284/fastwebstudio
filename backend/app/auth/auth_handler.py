@@ -1,12 +1,15 @@
 import os
+from dotenv import load_dotenv
 import time
 from typing import Dict
 from jose import jwt
 from passlib.context import CryptContext
 
+load_dotenv()
+
 # Clave secreta y algoritmo
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
+SECRET_KEY = os.getenv("SECRET_KEY", "mi_clave_secreta_default")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
