@@ -12,7 +12,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="FastWebStudio API")
 
 origins = [
-    "*",
+    "http://localhost:5173",  # frontend Vite
+    "http://127.0.0.1:5173",  # por si usas localhost o 127.0.0.1
 ]
 app.add_middleware(
     CORSMiddleware,

@@ -1,6 +1,5 @@
 annotated-types==0.7.0
 anyio==4.9.0
-bcrypt==4.3.0
 click==8.2.1
 dnspython==2.7.0
 ecdsa==0.19.1
@@ -11,6 +10,7 @@ greenlet==3.2.3
 h11==0.16.0
 idna==3.10
 passlib==1.7.4
+argon2-cffi==23.1.0 
 pyasn1==0.6.1
 pydantic==2.11.7
 pydantic-settings==2.10.1

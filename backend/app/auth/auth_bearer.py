@@ -10,8 +10,15 @@ class JWTBearer(HTTPBearer):
     async def __call__(self, request: Request):
         credentials: HTTPAuthorizationCredentials = await super().__call__(request)
         if credentials:
-            if not self.verify_jwt(credentials.credentials):
-                raise HTTPException(status_code=403, detail="Invalid token or expired token.")
+            print("🔐 TOKEN RECIBIDO:", credentials.credentials)
+            
+            payload = decode_jwt(credentials.credentials)
+            print("📦 PAYLOAD DECODIFICADO:", payload)
+
+            # 👇 Validamos que realmente exista "user_id" en el payload
+            if not payload.get("user_id"):
+                raise HTTPException(status_code=403, detail="Invalid or expired token")
+            
             return credentials.credentials
         else:
             raise HTTPException(status_code=403, detail="Invalid authorization code.")

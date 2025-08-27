@@ -1,36 +1,40 @@
-import { useState } from "react"
-import { useNavigate, Link } from "react-router-dom"
-import { useAuthContext } from "../auth/AuthContext"
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuthContext } from "../auth/AuthContext";
 
 export default function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const { login } = useAuthContext()
-  const navigate = useNavigate()
-  const [error, setError] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuthContext();
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setError("");
+
     try {
       const res = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Login failed");
 
-      if (!res.ok) throw new Error(data.detail || "Login failed")
+      const token = data.access_token ?? data.token;
+      if (!token || typeof token !== "string") {
+        throw new Error("El backend no devolvió un access_token válido");
+      }
 
-      localStorage.setItem("token", data.access_token)
-
-      login(data.access_token)
-
-      navigate("/dashboard")
+      localStorage.setItem("token", token);
+      login(token);
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     }
-  }
+  };
 
   return (
     <div className="max-w-md p-4 mx-auto mt-10 bg-white rounded shadow">
@@ -44,7 +48,7 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 border rounded"
           required
-          autoComplete="current-email"
+          autoComplete="email"
         />
         <input
           type="password"
@@ -59,10 +63,9 @@ export default function Login() {
           Entrar
         </button>
       </form>
-      <p>
-        ¿No tienes cuenta?{" "}
-        <Link to="/register">Regístrate aquí</Link>
+      <p className="mt-2">
+        ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
       </p>
     </div>
-  )
+  );
 }
