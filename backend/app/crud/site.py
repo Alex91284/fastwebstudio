@@ -1,21 +1,23 @@
 from sqlalchemy.orm import Session
-from app.schemas import site as schemas
-from app.models import site as models
+from datetime import datetime
+from app.models.site import Site
+from app.models.project import Project
+from app.schemas.site import SiteCreate, SiteUpdate
 
 def get_sites(db: Session):
-    return db.query(models.Site).all()
+    return db.query(Site).all()
 
 def get_site(db: Session, site_id: int):
-    return db.query(models.Site).filter(models.Site.id == site_id).first()
+    return db.query(Site).filter(Site.id == site_id).first()
 
-def create_site(db: Session, site: schemas.SiteCreate):
-    db_site = models.Site(**site.dict())
+def create_site(db: Session, site: SiteCreate):
+    db_site = Site(**site.dict())
     db.add(db_site)
     db.commit()
     db.refresh(db_site)
     return db_site
 
-def update_site(db: Session, site_id: int, site: schemas.SiteUpdate):
+def update_site(db: Session, site_id: int, site: SiteUpdate):
     db_site = get_site(db, site_id)
     if db_site:
         for field, value in site.dict(exclude_unset=True).items():
@@ -30,3 +32,25 @@ def delete_site(db: Session, site_id: int):
         db.delete(db_site)
         db.commit()
     return db_site
+
+def upsert_site(db: Session, project_id: int, data: SiteCreate | SiteUpdate):
+    site = db.query(Site).filter(Site.project_id==project_id).first()
+    if not site:
+        site = Site(project_id=project_id, name=data.name, slug=data.slug, is_published=False)
+        db.add(site); db.commit(); db.refresh(site)
+    else:
+        for k, v in data.dict(exclude_none=True).items():
+            setattr(site, k, v)
+        db.commit(); db.refresh(site)
+    return site
+
+def publish_site(db: Session, project_id: int):
+    site = db.query(Site).filter(Site.project_id==project_id).first()
+    if not site: return None
+    site.is_published = True
+    site.published_at = datetime.utcnow()
+    db.commit(); db.refresh(site)
+    return site
+
+def get_site_by_slug(db: Session, slug: str):
+    return db.query(Site).filter(Site.slug==slug, Site.is_published==True).first()

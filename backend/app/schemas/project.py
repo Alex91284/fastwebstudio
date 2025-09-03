@@ -1,24 +1,32 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
+from .page import PageOut
 
 
-# 🔹 Base común para crear/actualizar proyectos
-class ProjectBase(BaseModel):
-    name: str
-    description: Optional[str] = None
-    url: Optional[str] = None
+# # 🔹 Base común para crear/actualizar proyectos
+# class ProjectBase(BaseModel):
+#     name: str
+#     description: Optional[str] = None
+#     url: Optional[str] = None
 
 
 # 🔹 Esquema para creación de proyectos
-class ProjectCreate(ProjectBase):
-    pass
+class ProjectCreate(BaseModel):
+    name: str
 
 
 # 🔹 Esquema para respuesta de proyectos
-class ProjectOut(ProjectBase):
+class ProjectOut(BaseModel):
     id: int
-    user_id: int
+    name: str
+    class Config: 
+        from_attributes = True
+        orm_mode = True
 
+class ProjectFull(BaseModel):
+    id: int
+    name: str
+    pages: List[PageOut] = []
     class Config:
         from_attributes = True
         orm_mode = True

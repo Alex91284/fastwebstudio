@@ -1,42 +1,32 @@
-import { useEffect, useState } from "react"
-import {AuthContext} from "./AuthContext"
-import {jwtDecode} from "jwt-decode"
+import { useState, useEffect } from "react";
+import { AuthContext } from "./AuthContext";
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null)
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token")
-    if (storedToken) {
-      setToken(storedToken)
-      try {
-        const decoded = jwtDecode(storedToken)
-        setUser(decoded)
-      } catch (error) {
-        console.error("Invalid token", error)
-        logout()
-      }
+    // Aquí deberías validar el token guardado en localStorage o cookies
+    const token = localStorage.getItem("token");
+    if (token) {
+      // TODO: llamar a tu backend para obtener datos del usuario
+      setUser({ id: 1, name: "Demo User", role: "admin" }); // <-- EJEMPLO
     }
-    setLoading(false)
-  }, [])
+    setLoading(false);
+  }, []);
 
-  const login = (newToken) => {
-    localStorage.setItem("token", newToken)
-    setToken(newToken)
-    const decoded = jwtDecode(newToken)
-    setUser(decoded)
-  }
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem("token", userData.token);
+  };
 
   const logout = () => {
-    localStorage.removeItem("token")
-    setToken(null)
-    setUser(null)
-  }
+    setUser(null);
+    localStorage.removeItem("token");
+  };
 
   return (
-    <AuthContext.Provider value={{ loading, token, user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -28,13 +28,12 @@ def startup():
     create_tables()
 
 # Incluir routers con prefijos
-app.include_router(users.router, prefix="/api", tags=["Users"])
-app.include_router(projects.router, prefix="/api", tags=["Projects"])
-app.include_router(pages.router, prefix="/api", tags=["Pages"])
-app.include_router(components.router, prefix="/api", tags=["Components"])
-app.include_router(templates.router, prefix="/api", tags=["Templates"])
-app.include_router(auth.router, prefix="", tags=["Auth"])
-app.include_router(sites.router, prefix="/api", tags=["Site"])
+app.include_router(auth.router)
+app.include_router(users.router)
+app.include_router(projects.router)
+app.include_router(pages.router)
+app.include_router(components.router)
+app.include_router(sites.router)
 
 # Ruta raíz
 @app.get("/")
