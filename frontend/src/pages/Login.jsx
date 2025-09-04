@@ -24,7 +24,7 @@ export default function Login() {
       if (!res.ok) throw new Error(data.detail || "Login failed");
 
       const token = data.access_token ?? data.token;
-      if (!token || typeof token !== "string") {
+      if (!token) {
         throw new Error("El backend no devolvió un access_token válido");
       }
 

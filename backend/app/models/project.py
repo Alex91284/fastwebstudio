@@ -22,5 +22,5 @@ class Project(Base):
 
     # Relación con páginas y sitios
     pages = relationship("Page", back_populates="project", cascade="all, delete-orphan")
-    site = relationship("Site", back_populates="project")
+    sites = relationship("Site", back_populates="project", uselist=False)
 

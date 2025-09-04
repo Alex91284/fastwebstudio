@@ -12,8 +12,9 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="FastWebStudio API")
 
 origins = [
-    "http://localhost:5173",  # frontend Vite
-    "http://127.0.0.1:5173",  # por si usas localhost o 127.0.0.1
+    "*"
+    # "http://localhost:5173",  # frontend Vite
+    # "http://127.0.0.1:5173",  # por si usas localhost o 127.0.0.1
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -28,13 +29,12 @@ def startup():
     create_tables()
 
 # Incluir routers con prefijos
-app.include_router(auth.router)
-app.include_router(users.router)
-app.include_router(projects.router)
-app.include_router(pages.router)
-app.include_router(components.router)
-app.include_router(sites.router)
-
+app.include_router(auth.router, prefix="/api")
+app.include_router(users.router, prefix="/api")
+app.include_router(projects.router, prefix="/api")
+app.include_router(pages.router, prefix="/api")
+app.include_router(components.router, prefix="/api")
+app.include_router(sites.router, prefix="/api")
 # Ruta raíz
 @app.get("/")
 def read_root():
