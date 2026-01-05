@@ -10,8 +10,9 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
-    role: "user", // mejor default; idealmente el backend lo fija
+    role: "user", // Backend espera este campo
   });
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -25,24 +26,31 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/users/", {
+      // Enviar datos exactamente como espera el backend
+      const res = await fetch("http://localhost:8000/api/users/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          password: form.password,
+          role: form.role.trim(),
+        }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.detail || "Error al registrar usuario");
+        console.error("Error 422 detalle:", data);
+        throw new Error(data.detail?.[0]?.msg || "Error al registrar usuario");
       }
 
-      // el backend devuelve { access_token: "..." }
-      const token = data.access_token ?? data.token;
-      if (!token || typeof token !== "string") {
+      const token = data.access_token;
+      if (!token) {
         throw new Error("El backend no devolvió un access_token válido");
       }
 
+      // Guardar token y navegar al dashboard
       localStorage.setItem("token", token);
       login(token);
       navigate("/dashboard");
@@ -63,9 +71,8 @@ export default function Register() {
           placeholder="Nombre"
           value={form.name}
           onChange={handleChange}
-          autoComplete="username"
-          className="w-full p-2 border"
           required
+          className="w-full p-2 border"
         />
         <input
           type="email"
@@ -73,9 +80,8 @@ export default function Register() {
           placeholder="Correo electrónico"
           value={form.email}
           onChange={handleChange}
-          autoComplete="email"
-          className="w-full p-2 border"
           required
+          className="w-full p-2 border"
         />
         <input
           type="password"
@@ -83,17 +89,15 @@ export default function Register() {
           placeholder="Contraseña"
           value={form.password}
           onChange={handleChange}
-          autoComplete="new-password"
-          className="w-full p-2 border"
           required
+          className="w-full p-2 border"
         />
-        {/* Si quieres permitir cambiar rol, usa un select; si no, elimínalo */}
         <input
           type="text"
           name="role"
-          placeholder="Rol"
           value={form.role}
           onChange={handleChange}
+          autoComplete="current-password"
           className="w-full p-2 border"
         />
         {error && <p className="text-red-600">{error}</p>}
