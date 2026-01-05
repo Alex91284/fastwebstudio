@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { DndContext, useDraggable, useDroppable, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { useAuth } from "../auth/useAuth";
-import { getFullProject } from "../services/projects";
-import { addComponent, updateComponent, deleteComponent } from "../services/component.jsx";
-import { useEditor } from "../store/editorStore";
-import { publishSite, upsertSite } from "../services/sites";
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { DndContext, useDraggable, useDroppable, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
+import { useAuth } from "../auth/useAuth"
+import { getFullProject } from "../services/projects"
+import { addComponent, updateComponent, deleteComponent } from "../services/component.jsx"
+import { useEditor } from "../store/editorStore"
+import { publishSite, upsertSite } from "../services/sites"
 
 const PALETTE = [
   { type: "text", label: "Texto", props:{ text:"Doble clic para editar"}, styles:{ fontSize:24, fontWeight:"bold" } },
   { type: "image", label: "Imagen", props:{ src:"https://placehold.co/600x300", alt:"" }, styles:{} },
   { type: "button", label: "Botón", props:{ text:"Click aquí", href:"#"}, styles:{ padding:"12px 18px", borderRadius:8, border:"1px solid #222" } },
-];
+]
 
 function PaletteItem({ item }){
-  const { attributes, listeners, setNodeRef } = useDraggable({ id: `palette-${item.type}`, data: item });
-  return <div ref={setNodeRef} {...listeners} {...attributes} className="px-3 py-2 border rounded cursor-grab">{item.label}</div>;
+  const { attributes, listeners, setNodeRef } = useDraggable({ id: `palette-${item.type}`, data: item })
+  return <div ref={setNodeRef} {...listeners} {...attributes} className="px-3 py-2 border rounded cursor-grab">{item.label}</div>
 }
 
 function Canvas({ components, onDrop }){
-  const { setNodeRef, isOver } = useDroppable({ id:"canvas" });
+  const { setNodeRef, isOver } = useDroppable({ id:"canvas" })
   return (
     <div
       ref={setNodeRef}
@@ -30,18 +30,18 @@ function Canvas({ components, onDrop }){
           {components.map(c => <ComponentView key={c.id} comp={c} />)}
       </div>
     </div>
-  );
+  )
 }
 
 function ComponentView({ comp }){
-  const { token } = useAuth();
-  const {  currentPageId, replaceComponents, pageById } = useEditor();
-  const [editing, setEditing] = useState(false);
+  const { token } = useAuth()
+  const {  currentPageId, replaceComponents, pageById } = useEditor()
+  const [editing, setEditing] = useState(false)
   const onDelete = async () => {
-    await deleteComponent(token, comp.id);
-    const page = pageById(currentPageId);
-    replaceComponents(currentPageId, page.components.filter(x=>x.id!==comp.id));
-  };
+    await deleteComponent(token, comp.id)
+    const page = pageById(currentPageId)
+    replaceComponents(currentPageId, page.components.filter(x=>x.id!==comp.id))
+  }
 
   if(comp.type==="text"){
     return (
@@ -52,7 +52,7 @@ function ComponentView({ comp }){
             value={comp.props.text}
             onChange={async e=>{
               comp.props.text = e.target.value;
-              await updateComponent(token, comp.id, { props: comp.props });
+              await updateComponent(token, comp.id, { props: comp.props })
             }}
             onBlur={()=>setEditing(false)}
             autoFocus
@@ -62,7 +62,7 @@ function ComponentView({ comp }){
         )}
         <button onClick={onDelete} className="absolute hidden px-2 text-xs text-white bg-red-600 rounded-full group-hover:block -top-2 -right-2">x</button>
       </div>
-    );
+    )
   }
   if(comp.type==="image"){
     return (
@@ -70,7 +70,7 @@ function ComponentView({ comp }){
         <img src={comp.props.src} alt={comp.props.alt || ""} className="max-w-full rounded"/>
         <button onClick={onDelete} className="absolute hidden px-2 text-xs text-white bg-red-600 rounded-full group-hover:block -top-2 -right-2">x</button>
       </div>
-    );
+    )
   }
   if(comp.type==="button"){
     return (
@@ -78,49 +78,49 @@ function ComponentView({ comp }){
         <a href={comp.props.href} style={comp.styles}>{comp.props.text}</a>
         <button onClick={onDelete} className="absolute hidden px-2 text-xs text-white bg-red-600 rounded-full group-hover:block -top-2 -right-2">x</button>
       </div>
-    );
+    )
   }
-  return null;
+  return null
 }
 
 export default function Editor(){
-  const { id } = useParams();
-  const { token } = useAuth();
-  const { project, setProject, currentPageId, setCurrentPage, pageById, replaceComponents } = useEditor();
-  const sensors = useSensors(useSensor(PointerSensor));
-  const [siteSlug, setSiteSlug] = useState("");
+  const { id } = useParams()
+  const { token } = useAuth()
+  const { project, setProject, currentPageId, setCurrentPage, pageById, replaceComponents } = useEditor()
+  const sensors = useSensors(useSensor(PointerSensor))
+  const [siteSlug, setSiteSlug] = useState("")
 
   useEffect(() => {
     (async () => {
-      const data = await getFullProject(token, id);
-      setProject(data);
-      setSiteSlug(data?.site?.slug ?? "");
-    })();
-  }, [id, token, setProject]);
+      const data = await getFullProject(token, id)
+      setProject(data)
+      setSiteSlug(data?.site?.slug ?? "")
+    })()
+  }, [id, token, setProject])
 
-  const page = pageById(currentPageId) || { components: [] };
+  const page = pageById(currentPageId) || { components: [] }
 
   const handleDragEnd = async (ev) => {
-    const item = ev.active?.data?.current;
+    const item = ev.active?.data?.current
     if(ev.over?.id === "canvas" && item?.type){
       const created = await addComponent(token, page.id, {
         type: item.type, props: item.props, styles: item.styles, order: (page.components?.length ?? 0)
-      });
-      replaceComponents(page.id, [...(page.components || []), created]);
+      })
+      replaceComponents(page.id, [...(page.components || []), created])
     }
-  };
+  }
 
   const saveSite = async () => {
-    await upsertSite(token, project.id, { name: project.name, slug: siteSlug });
-    alert("Guardado. Puedes publicar.");
-  };
+    await upsertSite(token, project.id, { name: project.name, slug: siteSlug })
+    alert("Guardado. Puedes publicar.")
+  }
 
   const publish = async () => {
-    await publishSite(token, project.id);
-    alert(`Publicado en /s/${siteSlug}`);
-  };
+    await publishSite(token, project.id)
+    alert(`Publicado en /s/${siteSlug}`)
+  }
 
-  if(!project) return <div className="p-6">Cargando…</div>;
+  if(!project) return <div className="p-6">Cargando…</div>
 
   return (
     <div className="grid grid-cols-12 gap-6 p-6">
@@ -156,5 +156,5 @@ export default function Editor(){
         </DndContext>
       </main>
     </div>
-  );
+  )
 }

@@ -1,29 +1,29 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../auth/AuthContext";
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../auth/AuthContext"
 
 export default function Register() {
-  const navigate = useNavigate();
-  const { login } = useAuthContext();
+  const navigate = useNavigate()
+  const { login } = useAuthContext()
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
     role: "user", // Backend espera este campo
-  });
+  })
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
 
     try {
       // Enviar datos exactamente como espera el backend
@@ -36,30 +36,30 @@ export default function Register() {
           password: form.password,
           role: form.role.trim(),
         }),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        console.error("Error 422 detalle:", data);
-        throw new Error(data.detail?.[0]?.msg || "Error al registrar usuario");
+        console.error("Error 422 detalle:", data)
+        throw new Error(data.detail?.[0]?.msg || "Error al registrar usuario")
       }
 
-      const token = data.access_token;
+      const token = data.access_token
       if (!token) {
-        throw new Error("El backend no devolvió un access_token válido");
+        throw new Error("El backend no devolvió un access_token válido")
       }
 
       // Guardar token y navegar al dashboard
-      localStorage.setItem("token", token);
-      login(token);
-      navigate("/dashboard");
+      localStorage.setItem("token", token)
+      login(token)
+      navigate("/dashboard")
     } catch (err) {
-      setError(err.message);
+      setError(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="max-w-md p-6 mx-auto">
@@ -110,5 +110,5 @@ export default function Register() {
         </button>
       </form>
     </div>
-  );
+  )
 }

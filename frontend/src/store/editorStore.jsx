@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from "zustand"
 
 export const useEditor = create((set, get) => ({
   project: null,
@@ -7,9 +7,9 @@ export const useEditor = create((set, get) => ({
   setCurrentPage: (id) => set({ currentPageId: id }),
   pageById: (id) => get().project?.pages?.find(p => p.id === id),
   replaceComponents: (pageId, components) => {
-    const proj = structuredClone(get().project);
-    const page = proj.pages.find(p => p.id === pageId);
-    page.components = components;
-    set({ project: proj });
+    const proj = structuredClone(get().project)
+    const page = proj.pages.find(p => p.id === pageId)
+    page.components = components
+    set({ project: proj })
   },
-}));
+}))

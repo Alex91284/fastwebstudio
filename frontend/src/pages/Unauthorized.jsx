@@ -4,5 +4,5 @@ export default function Unauthorized() {
       <h1 className="text-3xl font-bold text-red-600">🚫 Acceso Denegado</h1>
       <p>No tienes permiso para ver esta página.</p>
     </div>
-  );
+  )
 }

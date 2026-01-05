@@ -1,17 +1,17 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Dashboard from "../pages/Dashboard";
-import Editor from "../pages/Editor";
-import AdminPanel from "../pages/AdminPanel";
-import Unauthorized from "../pages/Unauthorized";
-import NotFound from "../pages/NotFound";
+import Home from "../pages/Home"
+import Login from "../pages/Login"
+import Register from "../pages/Register"
+import Dashboard from "../pages/Dashboard"
+import Editor from "../pages/Editor"
+import AdminPanel from "../pages/AdminPanel"
+import Unauthorized from "../pages/Unauthorized"
+import NotFound from "../pages/NotFound"
 
-import ProtectedRoute from "../components/ProtectedRoute";
-import AdminRoute from "../components/AdminRoute";
-import { AuthProvider } from "../auth/AuthProvider";
+import ProtectedRoute from "../components/ProtectedRoute"
+import AdminRoute from "../components/AdminRoute"
+import { AuthProvider } from "../auth/AuthProvider"
 
 export default function AppRouter() {
   return (
@@ -60,5 +60,5 @@ export default function AppRouter() {
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-  );
+  )
 }

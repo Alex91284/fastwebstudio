@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../auth/useAuth";
-import { listProjects, createProject } from "../services/projects";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { useAuth } from "../auth/useAuth"
+import { listProjects, createProject } from "../services/projects"
+import { Link } from "react-router-dom"
 
 export default function Dashboard(){
-  const { token } = useAuth();
-  const [projects, setProjects] = useState([]);
-  const [name, setName] = useState("");
+  const { token } = useAuth()
+  const [projects, setProjects] = useState([])
+  const [name, setName] = useState("")
 
   useEffect(() => {
-    (async () => setProjects(await listProjects(token)))();
-  }, [token]);
+    (async () => setProjects(await listProjects(token)))()
+  }, [token])
 
   const onCreate = async (e) => {
-    e.preventDefault();
-    const p = await createProject(token, name);
-    setProjects(prev => [p, ...prev]);
-    setName("");
+    e.preventDefault()
+    const p = await createProject(token, name)
+    setProjects(prev => [p, ...prev])
+    setName("")
   };
 
   return (
@@ -36,5 +36,5 @@ export default function Dashboard(){
         ))}
       </div>
     </div>
-  );
+  )
 }
