@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { DndContext, useDraggable, useDroppable, closestCenter, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
-import { useAuth } from "../auth/useAuth"
+import { useAuthContext } from "../auth/AuthContext"
 import { getFullProject } from "../services/projects"
 import { addComponent, updateComponent, deleteComponent } from "../services/component.jsx"
 import { useEditor } from "../store/editorStore"
@@ -34,7 +34,7 @@ function Canvas({ components, onDrop }){
 }
 
 function ComponentView({ comp }){
-  const { token } = useAuth()
+  const { token } = useAuthContext()
   const {  currentPageId, replaceComponents, pageById } = useEditor()
   const [editing, setEditing] = useState(false)
   const onDelete = async () => {
@@ -85,7 +85,7 @@ function ComponentView({ comp }){
 
 export default function Editor(){
   const { id } = useParams()
-  const { token } = useAuth()
+  const { token } = useAuthContext()
   const { project, setProject, currentPageId, setCurrentPage, pageById, replaceComponents } = useEditor()
   const sensors = useSensors(useSensor(PointerSensor))
   const [siteSlug, setSiteSlug] = useState("")

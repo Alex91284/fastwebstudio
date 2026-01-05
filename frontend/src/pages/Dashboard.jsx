@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { useAuth } from "../auth/useAuth"
+import { useAuthContext } from "../auth/AuthContext"
 import { listProjects, createProject } from "../services/projects"
 import { Link } from "react-router-dom"
 
 export default function Dashboard(){
-  const { token } = useAuth()
+  const { token } = useAuthContext()
   const [projects, setProjects] = useState([])
   const [name, setName] = useState("")
 

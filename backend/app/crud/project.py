@@ -7,7 +7,7 @@ def create_project(db: Session, user_id: int, data: ProjectCreate) -> Project:
     project = Project(name=data.name, user_id=user_id)
     db.add(project); db.commit(); db.refresh(project)
     # página inicial
-    first = Page(name="Inicio", slug="inicio", project_id=project.id, order=0)
+    first = Page(title="Inicio", slug="inicio", project_id=project.id, order=0)
     db.add(first); db.commit()
     return project
 

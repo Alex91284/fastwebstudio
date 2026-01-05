@@ -12,9 +12,9 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="FastWebStudio API")
 
 origins = [
-    "*"
-    # "http://localhost:5173",  # frontend Vite
-    # "http://127.0.0.1:5173",  # por si usas localhost o 127.0.0.1
+    # "*"
+    "http://localhost:5173",  # frontend Vite
+    "http://127.0.0.1:5173",  # por si usas localhost o 127.0.0.1
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -40,6 +40,6 @@ app.include_router(sites.router, prefix="/api")
 def read_root():
     return {"message": "Bienvenido a FastWebStudio API 🚀"}
 
-@app.options("/{full_path:path}")
-def preflight_handler(full_path: str):
-    return {}
+# @app.options("/{full_path:path}")
+# def preflight_handler(full_path: str):
+#     return {}

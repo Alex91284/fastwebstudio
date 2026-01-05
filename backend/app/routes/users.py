@@ -79,7 +79,8 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
 @router.get("/me", dependencies=[Depends(JWTBearer())])
 def get_user_data(token: str = Depends(JWTBearer()), db: Session = Depends(get_db)):
     payload = decode_jwt(token)
-    user_id = payload.get("user_id")
+
+    user_id = payload.get("id")
     if not user_id:
         raise HTTPException(status_code=403, detail="Invalid or expired token")
 

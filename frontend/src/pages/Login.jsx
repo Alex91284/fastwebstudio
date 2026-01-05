@@ -14,7 +14,7 @@ export default function Login() {
     setError("")
 
     try {
-      const res = await fetch("http://localhost:8000/auth/login", {
+      const res = await fetch("http://localhost:8000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -23,12 +23,11 @@ export default function Login() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || "Login failed")
 
-      const token = data.access_token ?? data.token
-      if (!token) {
+      const token = data.access_token.access_token ?? data.token
+      if (!token || typeof token !== "string") {
         throw new Error("El backend no devolvió un access_token válido")
       }
 
-      localStorage.setItem("token", token)
       login(token)
       navigate("/dashboard")
     } catch (err) {

@@ -1,15 +1,15 @@
 import { Navigate } from "react-router-dom"
-import { useAuth } from "../auth/useAuth"
+import { useAuthContext } from "../auth/AuthContext"
 
 export default function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth()
+  const { isAuth, loading } = useAuthContext()
 
   if (loading) {
     return <div>Cargando...</div> // O un spinner bonito
   }
 
   // Si no hay usuario logueado → redirige a login
-  if (!user) {
+  if (!isAuth) {
     return <Navigate to="/login" replace />
   }
 

@@ -2,31 +2,29 @@ import { useState, useEffect } from "react"
 import { AuthContext } from "./AuthContext"
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Aquí deberías validar el token guardado en localStorage o cookies
-    const token = localStorage.getItem("token")
-    if (token) {
-      // TODO: llamar a tu backend para obtener datos del usuario
-      setUser({ id: 1, name: "Demo User", role: "admin" }) // <-- EJEMPLO
+    const storedToken = localStorage.getItem("token")
+    if (storedToken) {
+      setToken(storedToken)
     }
     setLoading(false)
   }, [])
 
-  const login = (userData) => {
-    setUser(userData)
-    localStorage.setItem("token", userData.token)
+  const login = (jwt) => {
+    localStorage.setItem("token", jwt)
+    setToken(jwt)
   }
 
   const logout = () => {
-    setUser(null)
     localStorage.removeItem("token")
+    setToken(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ token, isAuth: !!token, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
