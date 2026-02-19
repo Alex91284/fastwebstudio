@@ -21,7 +21,7 @@ class ProjectOut(BaseModel):
     name: str
     class Config: 
         from_attributes = True
-        orm_mode = True
+        from_attributes = True
 
 class ProjectFull(BaseModel):
     id: int
@@ -29,4 +29,4 @@ class ProjectFull(BaseModel):
     pages: List[PageOut] = []
     class Config:
         from_attributes = True
-        orm_mode = True
+        from_attributes = True
